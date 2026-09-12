@@ -1,8 +1,6 @@
---- a/grep_ast/tsl.py
-+++ b/grep_ast/tsl.py
-@@ -1,10 +1,40 @@
- try:
-     from tree_sitter_language_pack import get_language, get_parser
+--- a/grep_ast/tsl.py	2025-02-10 22:58:05.000000000 +0100
++++ b/grep_ast/tsl.py	2026-09-12 04:17:51.248779498 +0200
+@@ -3,7 +3,38 @@
  
      USING_TSL_PACK = True
  except ImportError:
@@ -41,3 +39,4 @@
 +        return Parser(get_language(name))
  
      USING_TSL_PACK = False
+ 
