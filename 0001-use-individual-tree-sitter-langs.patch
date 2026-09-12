@@ -1,6 +1,6 @@
 --- a/grep_ast/tsl.py
 +++ b/grep_ast/tsl.py
-@@ -1,10 +1,36 @@
+@@ -1,10 +1,40 @@
  try:
      from tree_sitter_language_pack import get_language, get_parser
  
@@ -9,30 +9,33 @@
 -    from tree_sitter_languages import get_language, get_parser
 +    from tree_sitter import Language, Parser
 +
++    # (module, language factory). TypeScript ships language_typescript /
++    # language_tsx instead of language().
 +    _LANG_MOD = {
-+        "python": "tree_sitter_python",
-+        "javascript": "tree_sitter_javascript",
-+        "typescript": "tree_sitter_typescript",
-+        "tsx": "tree_sitter_typescript",
-+        "rust": "tree_sitter_rust",
-+        "go": "tree_sitter_go",
-+        "bash": "tree_sitter_bash",
-+        "json": "tree_sitter_json",
-+        "html": "tree_sitter_html",
-+        "c": "tree_sitter_c",
-+        "cpp": "tree_sitter_cpp",
-+        "java": "tree_sitter_java",
-+        "css": "tree_sitter_css",
-+        "yaml": "tree_sitter_yaml",
-+        "markdown": "tree_sitter_markdown",
++        "python": ("tree_sitter_python", "language"),
++        "javascript": ("tree_sitter_javascript", "language"),
++        "typescript": ("tree_sitter_typescript", "language_typescript"),
++        "tsx": ("tree_sitter_typescript", "language_tsx"),
++        "rust": ("tree_sitter_rust", "language"),
++        "go": ("tree_sitter_go", "language"),
++        "bash": ("tree_sitter_bash", "language"),
++        "json": ("tree_sitter_json", "language"),
++        "html": ("tree_sitter_html", "language"),
++        "c": ("tree_sitter_c", "language"),
++        "cpp": ("tree_sitter_cpp", "language"),
++        "java": ("tree_sitter_java", "language"),
++        "css": ("tree_sitter_css", "language"),
++        "yaml": ("tree_sitter_yaml", "language"),
++        "markdown": ("tree_sitter_markdown", "language"),
 +    }
 +
 +    def get_language(name):
-+        modname = _LANG_MOD.get(name)
-+        if not modname:
++        spec = _LANG_MOD.get(name)
++        if not spec:
 +            raise LookupError(f"no packaged tree-sitter grammar for {name}")
-+        mod = __import__(modname, fromlist=["language"])
-+        return Language(mod.language())
++        modname, attr = spec
++        mod = __import__(modname, fromlist=[attr])
++        return Language(getattr(mod, attr)())
 +
 +    def get_parser(name):
 +        return Parser(get_language(name))

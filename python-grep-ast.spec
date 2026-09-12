@@ -8,6 +8,8 @@ URL:		https://github.com/paul-gauthier/grep-ast
 Source0:	https://files.pythonhosted.org/packages/source/g/grep-ast/grep_ast-%{version}.tar.gz
 Patch0:		0001-use-individual-tree-sitter-langs.patch
 BuildArch:	noarch
+# METADATA wants unpackaged tree-sitter-language-pack
+%global __requires_exclude ^python[0-9.]*dist\\(
 BuildRequires:	python
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python%{pyver}dist(pip)
